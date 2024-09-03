@@ -5,6 +5,9 @@ using UnityEngine;
 public class Laser : MonoBehaviour
 {
     void Update(){
-        transform.position += new Vector3(0,5,0);
+        transform.position += new Vector3(0,20,0) * Time.deltaTime;
+        if(transform.position.y >= 6){
+            Destroy(gameObject);
+        }
     }
 }
