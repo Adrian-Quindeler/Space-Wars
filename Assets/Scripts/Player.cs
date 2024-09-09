@@ -5,12 +5,13 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] int _velocidade = 7;
+    [SerializeField] float _velocidade = 6;
     [SerializeField] GameObject _prefab;
     [SerializeField] GameObject _tiroTriploPrefab;
     [SerializeField] bool _tiroTriplo;
     float _cadencia = 0.4f;
     float _ultimoTiro = 0;
+    public int vida = 3;
 
     void Start(){
         transform.position = new Vector3(0, -3, 0);
@@ -21,10 +22,14 @@ public class Player : MonoBehaviour
         if(Input.GetKey(KeyCode.Space) | Input.GetMouseButton(0)){
             Atirar();
         }
+
+        if(vida <= 0){
+            Destroy(gameObject);
+        }
     }
     void Movimentar(){
-        transform.Translate(new Vector3(1, 0, 0) * _velocidade * Time.deltaTime * Input.GetAxisRaw("Horizontal"));
-        transform.Translate(new Vector3(0, 1, 0) * _velocidade * Time.deltaTime * Input.GetAxisRaw("Vertical"));
+        transform.Translate(new Vector3(1, 0, 0) * _velocidade * Input.GetAxisRaw("Horizontal") * Time.deltaTime);
+        transform.Translate(new Vector3(0, 1, 0) * _velocidade * Input.GetAxisRaw("Vertical")   * Time.deltaTime);
     }
     void Limites(){
         //Limites da posição y: de 0 à -4
@@ -36,10 +41,10 @@ public class Player : MonoBehaviour
         }
 
         //Limites da posição x: de -9.5 à 9.5
-        if(transform.position.x > 9.6){
+        if(transform.position.x >= 9.6){
             transform.position = new Vector3(-9.6f, transform.position.y, 0);
         }
-        else if(transform.position.x < -9.6){
+        else if(transform.position.x <= -9.6){
             transform.position = new Vector3(9.6f, transform.position.y, 0);
         }
     }
@@ -55,4 +60,32 @@ public class Player : MonoBehaviour
             _ultimoTiro = Time.time + _cadencia;
         }
     }
+
+#region TiroTriplo   
+    public void AtivarTiroTriplo(){
+        _tiroTriplo = true;
+        StartCoroutine(DesativarTiroTriplo());
+    }
+    IEnumerator DesativarTiroTriplo(){
+
+        yield return new WaitForSeconds(7);
+        _tiroTriplo = false;
+    }
+#endregion
+
+#region Velocidade
+    public void AtivarVelocidade(){
+        if(_velocidade == 6){_velocidade = 12;}
+        else{_velocidade += 4;}
+
+        if(_cadencia > 0.16f){_cadencia -= 0.15f;}
+        StartCoroutine(DesativarVelocidade());
+    }
+    
+    IEnumerator DesativarVelocidade(){
+        yield return new WaitForSeconds(7);
+        _velocidade = 6;
+        _cadencia = 0.4f;
+    }
+#endregion
 }
