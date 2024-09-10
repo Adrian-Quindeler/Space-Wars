@@ -22,10 +22,6 @@ public class Player : MonoBehaviour
         if(Input.GetKey(KeyCode.Space) | Input.GetMouseButton(0)){
             Atirar();
         }
-
-        if(vida <= 0){
-            Destroy(gameObject);
-        }
     }
     void Movimentar(){
         transform.Translate(new Vector3(1, 0, 0) * _velocidade * Input.GetAxisRaw("Horizontal") * Time.deltaTime);
@@ -58,6 +54,13 @@ public class Player : MonoBehaviour
                 Instantiate(_prefab, transform.position + new Vector3(0, 0.7f, 0), Quaternion.identity);
             }
             _ultimoTiro = Time.time + _cadencia;
+        }
+    }
+
+    public void Dano(){
+        vida--;
+        if(vida <= 0){
+            Destroy(gameObject);
         }
     }
 
