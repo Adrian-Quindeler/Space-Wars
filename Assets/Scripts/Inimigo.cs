@@ -16,9 +16,12 @@ public class Inimigo : MonoBehaviour
     }
     void OnTriggerEnter2D(Collider2D other){
         if(other.tag == "Laser"){
+            if(other.transform.parent != null){
+                Destroy(other.transform.parent.gameObject);
+            }
             Destroy(other);
             Instantiate(explosao, transform.position, Quaternion.identity);
-            Destroy(gameObject);
+            Destroy(this.gameObject);
         }
         else if(other.tag == "Player"){
             Player player = other.GetComponent<Player>();

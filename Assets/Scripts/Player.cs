@@ -7,11 +7,14 @@ public class Player : MonoBehaviour
 {
     [SerializeField] float _velocidade = 6;
     [SerializeField] GameObject _prefab;
+    [SerializeField] GameObject _escudo;
+    [SerializeField] GameObject _explosao_prefab;
     [SerializeField] GameObject _tiroTriploPrefab;
     [SerializeField] bool _tiroTriplo;
     float _cadencia = 0.4f;
     float _ultimoTiro = 0;
-    public int vida = 3;
+    int _duracaoEscudo = 0;
+    int vida = 3;
 
     void Start(){
         transform.position = new Vector3(0, -3, 0);
@@ -58,9 +61,19 @@ public class Player : MonoBehaviour
     }
 
     public void Dano(){
-        vida--;
-        if(vida <= 0){
-            Destroy(gameObject);
+        if(_duracaoEscudo > 0){
+            _duracaoEscudo--;
+        }
+        else{
+            vida--;
+            if(vida <= 0){
+                Instantiate(_explosao_prefab, transform.position, Quaternion.identity);
+                Destroy(gameObject);
+            }
+        }
+
+        if(_duracaoEscudo == 0){
+            _escudo.SetActive(false);
         }
     }
 
@@ -89,6 +102,17 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(7);
         _velocidade = 6;
         _cadencia = 0.4f;
+    }
+#endregion
+
+#region Escudo
+    public void AtivarEscudo(){
+        if(_duracaoEscudo <= 0){
+            _duracaoEscudo = 2;
+            _escudo.SetActive(true);
+        }
+        else{_duracaoEscudo++;}
+
     }
 #endregion
 }

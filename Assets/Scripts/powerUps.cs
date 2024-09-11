@@ -18,6 +18,7 @@ public class powerUps : MonoBehaviour
 
                 if(_id == 0){player.AtivarTiroTriplo();}
                 if(_id == 1){player.AtivarVelocidade();}
+                if(_id == 2){player.AtivarEscudo();}
                 Destroy(gameObject);
             }
         }
