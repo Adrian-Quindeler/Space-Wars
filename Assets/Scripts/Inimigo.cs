@@ -10,7 +10,7 @@ public class Inimigo : MonoBehaviour
     void Update(){
         transform.Translate(new Vector3(0,-3,0) * Time.deltaTime);
         if(transform.position.y < -7){
-            int posX = Random.Range(-9, 9);
+            float posX = Random.Range(-9.0f, 9.1f);
             transform.position = new Vector3(posX, 7, 0);
         }
     }
