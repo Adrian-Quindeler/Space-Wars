@@ -11,14 +11,23 @@ public class Player : MonoBehaviour
     [SerializeField] GameObject _explosao_prefab;
     [SerializeField] GameObject _tiroTriploPrefab;
     [SerializeField] bool _tiroTriplo;
+
+    UIManager _uiManager;
+    GameManager _gameManager;
     float _cadencia = 0.4f;
     float _ultimoTiro = 0;
     int _duracaoEscudo = 0;
-    int vida = 3;
+    int _vida = 3;
 
     void Start(){
         transform.position = new Vector3(0, -3, 0);
+        _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
+        _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        if(_uiManager != null){
+            _uiManager.AtualizarVidas(_vida);
+        }
     }
+    
     void Update(){
         Limites();
         Movimentar();
@@ -26,6 +35,7 @@ public class Player : MonoBehaviour
             Atirar();
         }
     }
+
     void Movimentar(){
         transform.Translate(new Vector3(1, 0, 0) * _velocidade * Input.GetAxisRaw("Horizontal") * Time.deltaTime);
         transform.Translate(new Vector3(0, 1, 0) * _velocidade * Input.GetAxisRaw("Vertical")   * Time.deltaTime);
@@ -65,9 +75,11 @@ public class Player : MonoBehaviour
             _duracaoEscudo--;
         }
         else{
-            vida--;
-            if(vida <= 0){
+            _vida--;
+            _uiManager.AtualizarVidas(_vida);
+            if(_vida <= 0){
                 Instantiate(_explosao_prefab, transform.position, Quaternion.identity);
+                _gameManager.TerminarJogo();
                 Destroy(gameObject);
             }
         }
@@ -82,9 +94,10 @@ public class Player : MonoBehaviour
         _tiroTriplo = true;
         StartCoroutine(DesativarTiroTriplo());
     }
+
     IEnumerator DesativarTiroTriplo(){
 
-        yield return new WaitForSeconds(7);
+        yield return new WaitForSeconds(10);
         _tiroTriplo = false;
     }
 #endregion
@@ -99,7 +112,7 @@ public class Player : MonoBehaviour
     }
     
     IEnumerator DesativarVelocidade(){
-        yield return new WaitForSeconds(7);
+        yield return new WaitForSeconds(10);
         _velocidade = 6;
         _cadencia = 0.4f;
     }

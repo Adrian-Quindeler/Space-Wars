@@ -7,8 +7,8 @@ public class powerUps : MonoBehaviour
    [SerializeField] int _id;
     void Update(){
         transform.position += new Vector3(0, -3, 0) * Time.deltaTime;
-        if(transform.position.y <= -4){
-            transform.position = new Vector3(0,5,0);
+        if(transform.position.y <= -5){
+            Destroy(gameObject);
         }
     }
     void OnTriggerEnter2D(Collider2D other){

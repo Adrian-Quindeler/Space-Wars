@@ -6,7 +6,12 @@ using UnityEngine;
 public class Inimigo : MonoBehaviour
 {
     [SerializeField] GameObject explosao;
-    // Update is called once per frame
+    UIManager uiManager;
+
+    void Start(){
+        uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
+    }
+
     void Update(){
         transform.Translate(new Vector3(0,-3,0) * Time.deltaTime);
         if(transform.position.y < -7){
@@ -14,20 +19,21 @@ public class Inimigo : MonoBehaviour
             transform.position = new Vector3(posX, 7, 0);
         }
     }
+
     void OnTriggerEnter2D(Collider2D other){
         if(other.tag == "Laser"){
-            if(other.transform.parent != null){
-                Destroy(other.transform.parent.gameObject);
-            }
-            Destroy(other);
+            if(other.transform.parent != null){Destroy(other.transform.parent.gameObject);}
             Instantiate(explosao, transform.position, Quaternion.identity);
-            Destroy(this.gameObject);
+            Destroy(other.gameObject);
+            uiManager.AtualizarPontuação();
+            Destroy(gameObject);
         }
         else if(other.tag == "Player"){
             Player player = other.GetComponent<Player>();
             if(player != null){
                 player.Dano();
                 Instantiate(explosao, transform.position, Quaternion.identity);
+                uiManager.AtualizarPontuação();
                 Destroy(gameObject);
             }
         }
