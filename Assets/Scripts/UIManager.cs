@@ -22,9 +22,14 @@ public class UIManager : MonoBehaviour
         pontuacao.SetText("Pontuação: " + _pontuacao);
     }
 
+    public void ResetarPontuação(){
+        _pontuacao += 0;
+        pontuacao.SetText("Pontuação: " + _pontuacao);
+    }
+
     public void RemoverTitulo(){
         titulo.gameObject.SetActive(false);
-        _pontuacao = 0;
+        ResetarPontuação();
     }
 
     public void AtivarTitulo(){

@@ -144,3 +144,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   explosao: {fileID: 5468526878935322427, guid: df507289f2b7643449d83997207c6f21, type: 3}
+  _clip: {fileID: 8300000, guid: a885c043fab7e46438bba03ba9dab6bc, type: 3}

@@ -5,9 +5,10 @@ using UnityEngine;
 public class powerUps : MonoBehaviour
 {
    [SerializeField] int _id;
+   [SerializeField] AudioClip _clip;
     void Update(){
         transform.position += new Vector3(0, -3, 0) * Time.deltaTime;
-        if(transform.position.y <= -5){
+        if(transform.position.y <= -6){
             Destroy(gameObject);
         }
     }
@@ -19,6 +20,8 @@ public class powerUps : MonoBehaviour
                 if(_id == 0){player.AtivarTiroTriplo();}
                 if(_id == 1){player.AtivarVelocidade();}
                 if(_id == 2){player.AtivarEscudo();}
+
+                AudioSource.PlayClipAtPoint(_clip, Camera.main.transform.position, 1f);
                 Destroy(gameObject);
             }
         }

@@ -5,19 +5,21 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    [SerializeField] bool _tiroTriplo;
     [SerializeField] float _velocidade = 6;
     [SerializeField] GameObject _prefab;
     [SerializeField] GameObject _escudo;
     [SerializeField] GameObject _explosao_prefab;
     [SerializeField] GameObject _tiroTriploPrefab;
-    [SerializeField] bool _tiroTriplo;
+
+    int _vida = 3;
+    float _cadencia = 0.4f;
+    int _duracaoEscudo = 0;
+    float _ultimoTiro = 0;
 
     UIManager _uiManager;
     GameManager _gameManager;
-    float _cadencia = 0.4f;
-    float _ultimoTiro = 0;
-    int _duracaoEscudo = 0;
-    int _vida = 3;
+    AudioSource _audioSource;
 
     void Start(){
         transform.position = new Vector3(0, -3, 0);
@@ -26,6 +28,7 @@ public class Player : MonoBehaviour
         if(_uiManager != null){
             _uiManager.AtualizarVidas(_vida);
         }
+        _audioSource = GetComponent<AudioSource>();
     }
     
     void Update(){
@@ -41,7 +44,6 @@ public class Player : MonoBehaviour
         transform.Translate(new Vector3(0, 1, 0) * _velocidade * Input.GetAxisRaw("Vertical")   * Time.deltaTime);
     }
     void Limites(){
-        //Limites da posição y: de 0 à -4
         if(transform.position.y >= 0){
             transform.position = new Vector3(transform.position.x, 0, 0);
         }
@@ -49,7 +51,6 @@ public class Player : MonoBehaviour
             transform.position = new Vector3(transform.position.x, -4, 0);
         }
 
-        //Limites da posição x: de -9.5 à 9.5
         if(transform.position.x >= 9.6){
             transform.position = new Vector3(-9.6f, transform.position.y, 0);
         }
@@ -66,6 +67,7 @@ public class Player : MonoBehaviour
             else{
                 Instantiate(_prefab, transform.position + new Vector3(0, 0.7f, 0), Quaternion.identity);
             }
+            _audioSource.Play();
             _ultimoTiro = Time.time + _cadencia;
         }
     }

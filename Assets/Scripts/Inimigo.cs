@@ -7,6 +7,7 @@ public class Inimigo : MonoBehaviour
 {
     [SerializeField] GameObject explosao;
     UIManager uiManager;
+    [SerializeField] AudioClip _clip;
 
     void Start(){
         uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
@@ -25,6 +26,7 @@ public class Inimigo : MonoBehaviour
             if(other.transform.parent != null){Destroy(other.transform.parent.gameObject);}
             Instantiate(explosao, transform.position, Quaternion.identity);
             Destroy(other.gameObject);
+            AudioSource.PlayClipAtPoint(_clip, Camera.main.transform.position, 1f);
             uiManager.AtualizarPontuação();
             Destroy(gameObject);
         }
@@ -33,6 +35,7 @@ public class Inimigo : MonoBehaviour
             if(player != null){
                 player.Dano();
                 Instantiate(explosao, transform.position, Quaternion.identity);
+                AudioSource.PlayClipAtPoint(_clip, Camera.main.transform.position, 1f);
                 uiManager.AtualizarPontuação();
                 Destroy(gameObject);
             }
