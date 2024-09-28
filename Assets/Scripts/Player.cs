@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -11,6 +10,7 @@ public class Player : MonoBehaviour
     [SerializeField] GameObject _escudo;
     [SerializeField] GameObject _explosao_prefab;
     [SerializeField] GameObject _tiroTriploPrefab;
+    [SerializeField] GameObject[] _engines = new GameObject[2];
 
     int _vida = 3;
     float _cadencia = 0.4f;
@@ -77,12 +77,23 @@ public class Player : MonoBehaviour
             _duracaoEscudo--;
         }
         else{
-            _vida--;
+            _vida--;            
             _uiManager.AtualizarVidas(_vida);
             if(_vida <= 0){
                 Instantiate(_explosao_prefab, transform.position, Quaternion.identity);
                 _gameManager.TerminarJogo();
                 Destroy(gameObject);
+            }
+            if(_vida == 2){
+                _engines[Random.Range(0,2)].SetActive(true);
+            }
+            else{
+                if (_engines[0].activeSelf){
+                    _engines[1].SetActive(true);
+                }
+                else{
+                    _engines[0].SetActive(true);
+                }
             }
         }
 

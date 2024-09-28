@@ -12,6 +12,7 @@ public class powerUps : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
     void OnTriggerEnter2D(Collider2D other){
         if(other.tag == "Player"){
             Player player = other.GetComponent<Player>();
